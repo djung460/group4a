@@ -13,6 +13,8 @@ const int db7 = 7;
 const int rw	= 8;
 const int rs	= 9;
 
+int character[8]; 
+
 /*
 	Function prototypes
 */
@@ -90,12 +92,7 @@ void initLCD() {
 	digitalWrite(rs, LOW);
 
 	//Clear
-	digitalWrite(db4, LOW);
-	digitalWrite(db5, LOW);
-	digitalWrite(db6, LOW);
-	digitalWrite(db7, LOW);
-	digitalWrite(rw, LOW);
-	digitalWrite(rs, LOW);
+	clear();
 
 	//Set DDRAM address to 0
 	digitalWrite(db4, LOW);
@@ -106,12 +103,7 @@ void initLCD() {
 	digitalWrite(rs, LOW);
 
 	//Clear
-	digitalWrite(db4, LOW);
-	digitalWrite(db5, LOW);
-	digitalWrite(db6, LOW);
-	digitalWrite(db7, LOW);
-	digitalWrite(rw, LOW);
-	digitalWrite(rs, LOW);
+	clear();
 
 	//Set cursor 
 	digitalWrite(db4, HIGH);
@@ -121,3 +113,59 @@ void initLCD() {
 	digitalWrite(rw, LOW);
 	digitalWrite(rs, LOW);
 }
+
+
+void clear (){
+  digitalWrite(rs, LOW);
+  digitalWrite(rw, LOW);
+  digitalWrite(db7, LOW);
+  digitalWrite(db6, LOW);
+  digitalWrite(db5, LOW);
+  digitalWrite(db4, LOW);
+
+  digitalWrite(rs, LOW);
+  digitalWrite(rw, LOW);
+  digitalWrite(db7, LOW);
+  digitalWrite(db6, LOW);
+  digitalWrite(db5, LOW);
+  digitalWrite(db4, HIGH);
+}
+
+void writeStringLCD(){
+
+}
+
+
+//Write character to the LCD 
+void writeDataLCD(char c){
+  int ascVal = c;
+  decimal_to_binary(ascVal);
+  digitalWrite(rs, HIGH);
+  digitalWrite(rw, LOW);
+  digitalWrite(db7, character[0]);
+  digitalWrite(db6, character[1]);
+  digitalWrite(db5, character[2]);
+  digitalWrite(db4, character[3]);
+
+  digitalWrite(rs, HIGH);
+  digitalWrite(rw, LOW);
+  digitalWrite(db7, character[4]);
+  digitalWrite(db6, character[5]);
+  digitalWrite(db5, character[6]);
+  digitalWrite(db4, character[7]);
+}
+
+void decimal_to_binary(int n){
+  int i;
+  for (i = 0; i < 8; i++){
+    if ( n % 2 == 0){
+      character[7-i] = 0;
+    }
+    else {
+      character[7-i] = 1;
+    }
+    n = n/2;
+  }
+}
+
+
